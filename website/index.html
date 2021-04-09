@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <style>
+    body {
+      padding: 100px;
+      width: 1000px;
+      margin: auto;
+      text-align: left;
+      font-weight: 300;
+      font-family: 'Open Sans', sans-serif;
+      color: #121212;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+  </style>
+  <title>CS 184 Final Project Proposal</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+  <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2020</h1>
+  <h1 align="middle">Final Project: A Non-Photorealistic Lighting Model for Technical Illustrations</h1>
+  <h2 align="middle">Christine Lui, Jasper Hu, Raisa Bunyamin, Skeets Suherman, CS184-28267</h2>
+
+    <h2 align="middle">Overview</h2>
+    <p>We will be implementing an NPR shader with a lighting model that uses luminance and changes in hue to replicate human-drawn technical illustrations. Our model shades only in mid-tones such that the resulting image includes visible edge lines and highlights.</p>
+    <h2 align="middle">Problem Description</h2>
+    <p>Although photorealistic renders are often very visually impressive, they often obscure image clarity and are not suitable for more artistic designs. In the case of technical illustrations, non photorealistic lighting models are better suited for understanding the surface orientation in 3D space of an image.</p>
+    <p>We plan on implementing non photorealistic cool to warm shading along with edge lines and highlights in order to render images in a more visually clear way. 
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/1.png" align="middle" width="266px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <h2 align="middle">Goals and Deliverables</h2>
+    <h3 aligh="left">What we plan to deliver:</h3>
+    <p>We plan to implement the effects of a non-photorealistic lighting model for automatic technical illustration by creating a Phong model of an object, shading the model with highlights and cool to warm hue shift and also implementing edge lines. This will cause non photorealistic images to appear as if it was drawn for technical illustration. Descriptions for a technical illustration are stated as follows: edge lines that outline an object to give it shape, objects are shaded with intensities that are far from black or white with warmth and coolness of color that is indicative of its surface normal and shadowing will not be shown.
+    </p>
+    <p>We will use a Phong lighting model as a basis for approximation of our model which implies that we will implement ambient, diffuse and specular lighting on the object. This will also help make the object seem more realistic and also more detailed for technical illustrations.
+    </p>
+    <p>We hope we can create models that are similar to the ones in the paper where images do seem as if they are drawn for technical illustration. Our project will focus on creating convincing images and rendered objects that seem to be technically illustrated.
+    </p>
+    <p>We plan to render images using first the default Phong shading and then our technical illustration shading to show how the different abstractions convey different information to the viewer.</p>
+    <h3 align="left">We hope to deliver:</h3>
+    <p>If we get ahead of schedule, we hope to make our renders happen in real time. We also hope to make custom objects that are more complex (maybe in Blender) that will show off our shader.
+    </p>
+    <h2 align="middle">Schedule</h2>
+    <h3>Week 0 (4/5)</h3>
+    <p><i>Proposal due Fri 4/9</i></p>
+    <ul>
+        <li>Proposal Website</li>
+        <li>Submit Proposal form</li>
+      </ul>
+    <h3>Week 1 (4/12)</h3>
+    <p><i>Proposal Revisions received Tue 4/13</i></p>
+    <ul>
+        <li>Implement Phong shading</li>
+        <li>Implement edge lines</li>
+      </ul>
+    <h3>Week 2 (4/19)</h3>
+    <ul>
+        <li>Implement cool to warm tones</li>
+        <li>Implement lighting</li>
+        <li>Optimize rendeding</li>
+    </ul>
+    <h3>Week 3 (4/26)</h3>
+    <p><i>Graded Milestone due Tue 4/27</i></p>
+    <ul>
+        <li>Milestone Webpage</li>
+        <li>Milestone Video</li>
+        <li>Milestone Presentation Slides</li>
+        <li>Submit Milestone form</li>
+    </ul>
+    <h3>Week 4 (5/3)</h3>
+    <p><i>Final Presentation Thu 5/6</i></p>
+    <ul>
+        <li>Finalize slides</li>
+        <li>Final code adjustments</li>
+        <li>Final renders</li>
+    </ul>
+    <h3>Week 5 (5/3)</h3>
+    <p><i>Final Deliverables Thu 5/11</i></p>
+    <ul>
+        <li>Finalize video</li>
+        <li>Final report webpage</li>
+        <li>Submit Final deliverables form</li>
+    </ul>
+    <h2 align="middle">Resources</h2>
+    <h3>Papers</h3>
+    <p>We will be mostly following the paper by Gooch, Gooch, Shirley, and Cohen:
+        Gooch, A., Gooch, B., Shirley, P., & Cohen, E. (1998). A Non-Photorealistic Lighting Model For Automatic Technical Illustration. Retrieved from https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.6762&rep=rep1&type=pdf
+    </p>
+    <h3>Hardward and Software Resources</h3>
+    <p>Project 4 code base (using pre-existing Phong shading implementation) https://cs184.eecs.berkeley.edu/sp21/docs/proj4
+    </p>
+</body>
+
+</html>
