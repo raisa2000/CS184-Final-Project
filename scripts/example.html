@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script>
+            //import * as THREE from 'three';
+			const scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xf8f8ff);
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+			const geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
+            const material = new THREE.MeshPhongMaterial({ color: 0x0096FF});
+            const torusKnot = new THREE.Mesh( geometry, material );
+            scene.add( torusKnot );
+			var outline = new THREE.MeshBasicMaterial({color:0x000000, side:THREE.BackSide});
+			var outmesh = new THREE.Mesh(geometry, outline);
+			outmesh.position = torusKnot.position;
+			outmesh.scale.multiplyScalar(1.05);
+			scene.add(outmesh);
+			//const geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
+            //const material = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+            //const torusKnot = new THREE.Mesh( geometry, material );
+			//const geometry = new THREE.BoxGeometry( 100, 100, 100 );
+			//const edges = new THREE.EdgesGeometry( geometry );
+			//const line = new THREE.LineSegments( edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) );
+			//scene.add( line );
+			//var light = new THREE.PointLight( 0xffffff, 100, 950);
+			//light.position.set(0, 10, 50);
+			//scene.add(light);
+			//var light = new THREE.PointLight( 0xffffff, 100, 950);
+			//light.position.set(0, -100, 50);
+			//scene.add(light);
+			//var light = new THREE.PointLight( 0xffffff, 5, 90);
+			//light.position.set(0, 0, 50);
+			//scene.add(light)
+			var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+			scene.add( light );
+			var spotLight = new THREE.SpotLight( 0xffffff );
+			spotLight.position.set(50, 50, 50 );
+
+			spotLight.castShadow = true;
+
+			spotLight.shadow.mapSize.width = 1024;
+			spotLight.shadow.mapSize.height = 1024;
+
+			spotLight.shadow.camera.near = 500;
+			spotLight.shadow.camera.far = 4000;
+			spotLight.shadow.camera.fov = 30;
+
+			scene.add( spotLight );
+			var spotLight = new THREE.SpotLight( 0xffffff );
+			spotLight.position.set(50, 50, 50 );
+
+			spotLight.castShadow = true;
+
+			spotLight.shadow.mapSize.width = 1024;
+			spotLight.shadow.mapSize.height = 1024;
+
+			spotLight.shadow.camera.near = 500;
+			spotLight.shadow.camera.far = 4000;
+			spotLight.shadow.camera.fov = 30;
+
+			scene.add( spotLight );
+			camera.position.z = 60;
+
+			const animate = function () {
+				requestAnimationFrame( animate );
+
+				torusKnot.rotation.x += 0.01;
+				torusKnot.rotation.y += 0.01;
+				outmesh.rotation.x += 0.01;
+				outmesh.rotation.y += 0.01;
+				//line.rotation.x += 0.01;
+				//line.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+			};
+
+			animate();
+		</script>
+	</body>
+</html>
