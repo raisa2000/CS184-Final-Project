@@ -95,22 +95,40 @@
     </script>
 	<body>
         <div class="slidecontainer">
+            <p>Blue Value: <span id="BlueVal"></span></p>
             <input type="range" min="1" max="100" value="20" class="slider" id="BlueRange">
-            <p>Value: <span id="BlueVal"></span></p>
+            
         </div>
         <div class="slidecontainer">
+            <p>Yellow Value: <span id="YellowVal"></span></p>
             <input type="range" min="1" max="100" value="80" class="slider" id="YellowRange">
-            <p>Value: <span id="YellowVal"></span></p>
+            
+        </div>
+        <div class="slidecontainer">
+            <p>Alpha Value: <span id="AlphaVal"></span></p>
+            <input type="range" min="1" max="100" value="20" class="slider" id="AlphaRange">
+            
+        </div>
+        <div class="slidecontainer">
+            <p>Beta Value: <span id="BetaVal"></span></p>
+            <input type="range" min="1" max="100" value="60" class="slider" id="BetaRange">
+            
         </div>
 		<script src="./js/three.js"></script>
 		<script>
             var bslider = document.getElementById("BlueRange");
             var boutput = document.getElementById("BlueVal");
-            boutput.innerHTML = bslider.value;
+            boutput.innerHTML = bslider.value/100;
             
             var yslider = document.getElementById("YellowRange");
             var youtput = document.getElementById("YellowVal");
-            youtput.innerHTML = yslider.value;
+            youtput.innerHTML = yslider.value/100;
+            var aslider = document.getElementById("AlphaRange");
+            var aoutput = document.getElementById("AlphaVal");
+            aoutput.innerHTML = aslider.value/100;
+            var beslider = document.getElementById("BetaRange");
+            var beoutput = document.getElementById("BetaVal");
+            beoutput.innerHTML = beslider.value/100;
 			const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xf8f8ff);
 
@@ -142,10 +160,10 @@
                     p: {type: 'f', value: 50.},
 
                     //warm to cool coeffs
-                    blue: {type: 'float', value: boutput.innerHTML/100}, //blue in [0, 1]
-                    yellow: {type: 'float', value: youtput.innerHTML/100}, //yellow in [0, 1]
-                    alpha: {type: 'float', value: 0.2},
-                    beta: {type: 'float', value: 0.6},
+                    blue: {type: 'float', value: boutput.innerHTML}, //blue in [0, 1]
+                    yellow: {type: 'float', value: youtput.innerHTML}, //yellow in [0, 1]
+                    alpha: {type: 'float', value:aoutput.innerHTML},
+                    beta: {type: 'float', value: beoutput.innerHTML},
 
                     //scene vars
                     cameraPos: {type: 'vec3', value: camera.position},
@@ -164,14 +182,23 @@
             
 
             bslider.oninput = function() {
-                boutput.innerHTML = this.value;
-                torusKnot.material.uniforms.blue.value = boutput.innerHTML/100;
+                boutput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.blue.value = boutput.innerHTML;
             }
             
 
             yslider.oninput = function() {
-                youtput.innerHTML = this.value;
-                torusKnot.material.uniforms.yellow.value = youtput.innerHTML/100; 
+                youtput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.yellow.value = youtput.innerHTML; 
+            }
+
+            aslider.oninput = function() {
+                aoutput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.alpha.value = aoutput.innerHTML; 
+            }
+            beslider.oninput = function() {
+                beoutput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.beta.value = beoutput.innerHTML; 
             }
            
 			scene.add( torusKnot );
@@ -184,7 +211,7 @@
             var inline = new THREE.MeshBasicMaterial({color:0x000000, side:THREE.BackSide});
             var inmesh = new THREE.Mesh(geometry, inline);
             inmesh.position = torusKnot.position;
-            inmesh.scale.multiplyScalar(0.93);
+            inmesh.scale.multiplyScalar(0.93    );
             scene.add(inmesh);
 
 
@@ -197,13 +224,13 @@
                 //torusKnot.material.yellow.value = 0.5; 
                 //torusKnot.update();
                 
-				torusKnot.rotation.x += 0.01;
-				torusKnot.rotation.y += 0.01;
+				torusKnot.rotation.x += 0.0;
+				torusKnot.rotation.y += 0.0;
 
-				outmesh.rotation.x += 0.01;
-				outmesh.rotation.y += 0.01;
-                inmesh.rotation.x += 0.01;
-				inmesh.rotation.y += 0.01;
+				outmesh.rotation.x += 0.0;
+				outmesh.rotation.y += 0.0;
+                inmesh.rotation.x += 0.0;
+				inmesh.rotation.y += 0.0;
 
 			}
 			animate();
