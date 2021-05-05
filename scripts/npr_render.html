@@ -12,11 +12,12 @@
     <script type="x-shader/x-vertex" id="techdrawVertex">
         varying vec3 v_position;
         varying vec3 v_normal;
-
+    
         void main() {
-            v_position = vec3(modelViewMatrix * vec4(position, 1.0));
-            v_normal = normalize(normalMatrix * normal);
-
+            //v_position = vec3(modelViewMatrix * vec4(position, 1.0));
+            v_position = position;
+            v_normal = normalize(normalMatrix* normal);
+            //v_normal = normal;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
     </script>
@@ -72,7 +73,20 @@
             vec3 k_yellow = vec3(yellow, yellow, 0.);
             vec3 k_cool = k_blue + alpha * vec3(1., 1., 1.); //kd = 1
             vec3 k_warm = k_yellow + beta * vec3(1., 1., 1.); //kd = 1
-            return specular + ((1. + dot(l, n)) / 2.) * k_cool + (1. - ((1. + dot(l, n)) / 2.)) * k_warm;
+            //vec3 k_cool = vec3(0.,0.,0.);
+            //vec3 k_warm = vec3(1.,1.,1.);
+
+
+
+
+           // float diff = max(dot(n, l), 0.0);
+            //vec3 ref = diff*vec3(0.5, 0.5, 0.5);
+            //return ambient + diff;
+           // return specular + ((1. + dot(l, n)) / 2.) * k_cool;
+//           return (1. - ((1. + dot(l, n)) / 2.))*vec3(1.,1.,1.);
+
+           //return ((1. + dot(l, n)) / 2.)*vec3(1.,1.,1.);
+           return specular + ((1. + dot(l, n)) / 2.) * k_cool + (1. - ((1. + dot(l, n)) / 2.)) * k_warm;
         }
 
         void main() {
@@ -93,18 +107,10 @@
             var bslider = document.getElementById("BlueRange");
             var boutput = document.getElementById("BlueVal");
             boutput.innerHTML = bslider.value;
-
-            bslider.oninput = function() {
-            boutput.innerHTML = this.value;
-            }
+            
             var yslider = document.getElementById("YellowRange");
             var youtput = document.getElementById("YellowVal");
             youtput.innerHTML = yslider.value;
-
-            yslider.oninput = function() {
-            youtput.innerHTML = this.value;
-            }
-            
 			const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xf8f8ff);
 
@@ -150,10 +156,24 @@
                 vertexShader: document.getElementById('techdrawVertex').textContent,
                 fragmentShader: document.getElementById('techdrawFragment').textContent
             });
-            
+            material.needsUpdate = true;
 
             
 			const torusKnot = new THREE.Mesh( geometry, material );
+        
+            
+
+            bslider.oninput = function() {
+                boutput.innerHTML = this.value;
+                torusKnot.material.uniforms.blue.value = boutput.innerHTML/100;
+            }
+            
+
+            yslider.oninput = function() {
+                youtput.innerHTML = this.value;
+                torusKnot.material.uniforms.yellow.value = youtput.innerHTML/100; 
+            }
+           
 			scene.add( torusKnot );
 
 			var outline = new THREE.MeshBasicMaterial({color:0x000000, side:THREE.BackSide});
@@ -173,7 +193,10 @@
 			function animate() {
 				requestAnimationFrame( animate );
 				renderer.render( scene, camera );
-
+                //torusKnot.material.blue.value = 0.5; // there is also setHSV and setRGB
+                //torusKnot.material.yellow.value = 0.5; 
+                //torusKnot.update();
+                
 				torusKnot.rotation.x += 0.01;
 				torusKnot.rotation.y += 0.01;
 
