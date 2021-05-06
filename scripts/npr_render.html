@@ -91,29 +91,89 @@
 
         void main() {
             gl_FragColor = vec4(rgb(), 1.0);
+            gl_FragColor = gl_FragColor * vec4(colorA, 1.);
+
         }
     </script>
 	<body>
-        <div class="slidecontainer">
-            <p>Blue Value: <span id="BlueVal"></span></p>
-            <input type="range" min="1" max="100" value="20" class="slider" id="BlueRange">
-            
+        <div align="center">
+            <table style="width=100%">
+
+                <tr>
+
+                    <td align="left">
+                        <div class="slidecontainer">
+                            <p>Blue Value: <span id="BlueVal"></span></p>
+                            <input type="range" min="1" max="100" value="20" class="slider" id="BlueRange">
+                            
+                        </div>
+                    </td>
+             
+
+                    <td align="right">
+                        <div class="slidecontainer">
+                            <p>Yellow Value: <span id="YellowVal"></span></p>
+                            <input type="range" min="1" max="100" value="80" class="slider" id="YellowRange">
+                            
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+
+
+
+                    <td align="left">
+                        <div class="slidecontainer">
+                            <p>Alpha Value: <span id="AlphaVal"></span></p>
+                            <input type="range" min="1" max="100" value="20" class="slider" id="AlphaRange">
+                            
+                        </div>
+                    </td>
+                 
+                    <td align="right">
+                        <div class="slidecontainer">
+                            <p>Beta Value: <span id="BetaVal"></span></p>
+                            <input type="range" min="1" max="100" value="60" class="slider" id="BetaRange">
+                            
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+
+
+
+                    <td align="left">
+                        <div class="slidecontainer">
+                            <p>R Value: <span id="RVal"></span></p>
+                            <input type="range" min="0" max="255" value="237" class="slider" id="RRange">
+                            
+                        </div>
+                    </td>
+                 
+                    <td align="center">
+                        <div class="slidecontainer">
+                            <p>G Value: <span id="GVal"></span></p>
+                            <input type="range" min="0" max="255" value="100" class="slider" id="GRange">
+                            
+                        </div>
+                    </td>
+                    <td align="right">
+                        <div class="slidecontainer">
+                            <p>B Value: <span id="BVal"></span></p>
+                            <input type="range" min="0" max="255" value="180" class="slider" id="BRange">
+                            
+                        </div>
+                </tr>
+
+            </table>
         </div>
-        <div class="slidecontainer">
-            <p>Yellow Value: <span id="YellowVal"></span></p>
-            <input type="range" min="1" max="100" value="80" class="slider" id="YellowRange">
-            
-        </div>
-        <div class="slidecontainer">
-            <p>Alpha Value: <span id="AlphaVal"></span></p>
-            <input type="range" min="1" max="100" value="20" class="slider" id="AlphaRange">
-            
-        </div>
-        <div class="slidecontainer">
-            <p>Beta Value: <span id="BetaVal"></span></p>
-            <input type="range" min="1" max="100" value="60" class="slider" id="BetaRange">
-            
-        </div>
+        
+        
+        
+        
+        
+        
+       
 		<script src="./js/three.js"></script>
 		<script>
             var bslider = document.getElementById("BlueRange");
@@ -129,6 +189,16 @@
             var beslider = document.getElementById("BetaRange");
             var beoutput = document.getElementById("BetaVal");
             beoutput.innerHTML = beslider.value/100;
+            var slider1 = document.getElementById("RRange");
+            var output1 = document.getElementById("RVal");
+            output1.innerHTML = slider1.value
+            var slider2 = document.getElementById("GRange");
+            var output2 = document.getElementById("GVal");
+            output2.innerHTML = slider2.value
+            var slider3 = document.getElementById("BRange");
+            var output3 = document.getElementById("BVal");
+            output3.innerHTML = slider3.value
+            
 			const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xf8f8ff);
 
@@ -149,7 +219,9 @@
 
 
 			const geometry = new THREE.TorusKnotGeometry( );
-
+            function rgbToHex(r, g, b) {
+                return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+            }
             const material = new THREE.ShaderMaterial({
                 uniforms: {
                     //phong shading coeffs
@@ -200,7 +272,18 @@
                 beoutput.innerHTML = this.value/100;
                 torusKnot.material.uniforms.beta.value = beoutput.innerHTML; 
             }
-           
+            slider1.oninput = function() {
+                output1.innerHTML = this.value;
+                torusKnot.material.uniforms.colorA.value.setRGB(output1.innerHTML/255, output2.innerHTML/255, output3.innerHTML/255); 
+            }
+            slider2.oninput = function() {
+                output2.innerHTML = this.value;
+                torusKnot.material.uniforms.colorA.value.setRGB(output1.innerHTML/255, output2.innerHTML/255, output3.innerHTML/255); 
+            }
+            slider3.oninput = function() {
+                output3.innerHTML = this.value;
+                torusKnot.material.uniforms.colorA.value.setRGB(output1.innerHTML/255, output2.innerHTML/255, output3.innerHTML/255); 
+            }
 			scene.add( torusKnot );
 
 			var outline = new THREE.MeshBasicMaterial({color:0x000000, side:THREE.BackSide});
@@ -224,13 +307,13 @@
                 //torusKnot.material.yellow.value = 0.5; 
                 //torusKnot.update();
                 
-				torusKnot.rotation.x += 0.0;
-				torusKnot.rotation.y += 0.0;
+				torusKnot.rotation.x += 0.01;
+				torusKnot.rotation.y += 0.01;
 
-				outmesh.rotation.x += 0.0;
-				outmesh.rotation.y += 0.0;
-                inmesh.rotation.x += 0.0;
-				inmesh.rotation.y += 0.0;
+				outmesh.rotation.x += 0.01;
+				outmesh.rotation.y += 0.01;
+                inmesh.rotation.x += 0.01;
+				inmesh.rotation.y += 0.01;
 
 			}
 			animate();
