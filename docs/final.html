@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <style>
+    body {
+      padding: 100px;
+      width: 1000px;
+      margin: auto;
+      text-align: left;
+      font-weight: 300;
+      font-family: 'Open Sans', sans-serif;
+      color: #121212;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+  </style>
+  <title>CS 184 Final Project Milestone Report</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+  <h5 align="middle">
+    <a href="index.html">Proposal</a>
+    <a href="milestone.html">Milestone Report</a>
+    <a href="final.html">Final Report</a>
+  </h5>
+  <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2021</h1>
+  <h1 align="middle">Final Project: A Non-Photorealistic Lighting Model for Technical Illustrations</h1>
+  <h2 align="middle">Christine Lui, Jasper Hu, Raisa Bunyamin, Skeets Suherman, CS184-28267</h2>
+
+    <h2 align="middle">Abstract</h2>
+    <p>We will be implementing an NPR shader with a lighting model that uses luminance and changes in hue to replicate human-drawn technical illustrations. Our model shades only in mid-tones such that the resulting image includes visible edge lines and highlights. We had to first learn how to use Three.js API in order to create technical illustration objects. We first created a scene on Three.js with point lights to highlight the object when Phong shading is implemented. We then selected the torus knot as a base object for our technical illustration. The torus knot was added into the scene. Phong shading was also implemented in order to create a specular material for the torus knot since Phong shading is essential in creating technical illustrations. After implementing edge shading, we had to figure out how to create a perspective based edge outline for technical illustrations. The edge outline has to be perspective based much like the edge outlines we see in paper cited. We then had to create cool to warm hue shift for our object as it is essential for Gooch illustration.</p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/1.png" align="middle" width="400px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <p>Next, we imported Phong shading, and applied it onto our torus knot in order to create a specular material. This step is important because Phong shading is widely used in many technical illustrations and we would like to replicate that effect ass closely as possible. </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/torus2.png" align="middle" width="400px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <p>After implementing edge shading, we had to figure out how to create a perspective based edge outline for technical illustrations. The edge outline has to be perspective based much like the edge outlines we see in paper cited. We then figured out that we can create such an outline by implementing it as a new mesh geometry surrounding our torus knot. We then created such an outline and changed the color of the outline to black to further see the resemblance with technical illustration drawings.</p>
+    </p>
+    <div align="middle">
+      <table style="width=100%">
+        <tr>
+            <td>
+                <img src="images/torus3.png" align="middle" width="400px" />
+              </td>
+              <br>
+        </tr>
+      </table
+  </div>
+    <h2 align="middle">Schedule and Updated Work Plan</h2>
+    <p>Overall, we would say our progress is mostly on-track along our original schedule, but now we have a more direct idea of where to explore next to complete our implementation of a technical drawing shader. We are planning to work on our cool to warm shading, and possibly more shaders in the next coming weeks</p>
+    <h3>Week 4 (5/3)</h3>
+    <p><i>Final Presentation Thu 5/6</i></p>
+    <ul>
+        <li>Implement cool to warm texture for our models to display technical illustrations</li>
+        <li>Create a better environment for technical illustration object (single point light source)</li>
+        <li>If we have more time, create a real-time movable environment</li>
+    </ul>
+    <h3>Week 5 (5/10)</h3>
+    <p><i>Final Deliverables Thu 5/11</i></p>
+    <ul>
+        <li>Prepare for final presentation</li>
+        <li>Finalize shader</li>
+        <li>Add in any reach goals</li>
+    </ul>
+    <h2 align="middle">Video</h2>
+    <video width="640" height="480" controls>
+      <source src="images/zoom_0.mp4" type=video/mp4>
+    </video>
+    <h2 align="middle">Slides</h2>
+    <h3 align="middle">
+      <a href="https://docs.google.com/presentation/d/1HUAGA_KX4wR7uY2Z3rUwdV4go5eaUIfZtfszUs3bvt8/edit?usp=sharing
+      ">Google Slides link</a>
+    </h3>
+    <h2 align="middle">Resources</h2>
+    <h3>Papers</h3>
+    <p>We will be mostly following the paper by Gooch, Gooch, Shirley, and Cohen:
+        Gooch, A., Gooch, B., Shirley, P., & Cohen, E. (1998). A Non-Photorealistic Lighting Model For Automatic Technical Illustration. Retrieved from https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.6762&rep=rep1&type=pdf
+    </p>
+    <h3>Hardward and Software Resources</h3>
+    <p>Project 4 code base (using pre-existing Phong shading implementation) https://cs184.eecs.berkeley.edu/sp21/docs/proj4
+    </p>
+</body>
+
+</html>
