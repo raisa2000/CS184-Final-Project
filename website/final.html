@@ -1,0 +1,547 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <style>
+    body {
+      padding: 100px;
+      width: 1000px;
+      margin: auto;
+      text-align: left;
+      font-weight: 300;
+      font-family: 'Open Sans', sans-serif;
+      color: #121212;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+  </style>
+  <title>CS 184 Final Project Milestone Report</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+  <h5 align="middle">
+    <a href="index.html">Proposal</a>
+    <a href="milestone.html">Milestone Report</a>
+    <a href="final.html">Final Report</a>
+  </h5>
+  <h1 align="middle">CS 184: Computer Graphics and Imaging, Spring 2021</h1>
+  <h1 align="middle">Final Project: A Non-Photorealistic Lighting Model for Technical Illustrations</h1>
+  <h2 align="middle">Christine Lui, Jasper Hu, Raisa Bunyamin, Skeets Suherman, CS184-28267</h2>
+
+    <h2 align="middle">Abstract</h2>
+    <!-- <p>We will be implementing an NPR shader with a lighting model that uses luminance and changes in hue to replicate human-drawn technical illustrations. Our model shades only in mid-tones such that the resulting image includes visible edge lines and highlights. We had to first learn how to use Three.js API in order to create technical illustration objects. We first created a scene on Three.js with point lights to highlight the object when Phong shading is implemented. We then selected the torus knot as a base object for our technical illustration. The torus knot was added into the scene. Phong shading was also implemented in order to create a specular material for the torus knot since Phong shading is essential in creating technical illustrations. After implementing edge shading, we had to figure out how to create a perspective based edge outline for technical illustrations. The edge outline has to be perspective based much like the edge outlines we see in paper cited. We then had to create cool to warm hue shift for our object as it is essential for Gooch illustration.</p> -->
+    <p>We implemented a NPR technical drawing shader in WebGL with three.js. We followed the Gooch 1998 paper "A Non-photorealistic Lighting Model For Automatic Technical Illustration". A technical drawing consists of the following: black edge lines, the coolness/warmth of color indicates the surface normal, a single light source for highlights, and no shadows. We implemented the Gooch lighting model as it uses luminance and changes in hue to replicate human-drawn technical illustrations and shades only in mid-tones such that the resulting image has clearly distinct edge lines and highlights. We created a real time demo that lets people change the value of the different parameters to better understand the Gooch lighting model.
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/1.png" align="middle" width="800px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <h2 align="middle">Technical Approach</h2>
+    <h3>Why we can't use diffuse lighting model</h3>
+    <p>From lecture and our projects, we learned that Blinn-Phong shading is the sum of our ambient, diffuse, and specular components. We used the diffuse shading formula from the paper, which is:</p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/f2.png" align="middle" width="300px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <p>This gives us an unsatisfactory image which hides shape and material information, especially in the dark regions. To counter this, we added highlights (and later edge lines) on our object, which helps with defining our object. </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/d1.png" align="middle" width="800px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <h3>Specular Lights (Blinn-Phong)</h3>
+    <p>We use the Blinn-Phong method for creating specular highlights as it provides material information. We used p = 50.
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/f3.png" align="middle" width="400px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <h3>Edge Lines</h3>
+    <p>We found that detecting edges is a challenging task to do in NPR shading. For now, we decided to create another mesh for our object and render the back faces. Then, we changed the color to black and adjusted the thickness of our outline to achieve results more similar to a technical illustration. 
+    </p>
+    <p>We tried a different method, which is adding a second light in our scene, but this ultimately did not work because it might require a different implementation of our shading and highlights.
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/torus3.png" align="middle" width="400px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <p>With our implementation of edge outlines, more complex objects' edge lines are still missing. We are still working on finding a more consistent and efficient way to detect edges and rendering lines. Below shows an example of a pipe we had difficulty rendering edge outlines for.
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/tube.png" align="middle" width="400px" />
+                </td>
+                <br>
+          </tr>
+        </table>
+    </div>
+    <h3>Cool to Warm Hue Shift</h3>
+    <p>From our paper, we are able to represent the surface normals as cool and warm with blue to yellow tones. 
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+              <td>
+                  <img src="images/f4.png" align="middle" width="400px" />
+            </td>
+            <td>
+                <img src="images/f5.png" align="middle" width="200px" />
+            </td>
+            <br>
+          </tr>
+        </table>
+    </div>
+    <div align="middle">
+        <table style="width=100%">
+          
+          <tr>
+            <td>
+                <img src="images/f6.png" align="middle" width="800px" />
+            </td>
+          </tr>
+        </table>
+    </div>
+    <p>Next, we are able to represent the linear blend between our blue/yellow and black/object-color tones with this equation.
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          
+          <tr>
+            <td>
+                <img src="images/f7.png" align="middle" width="400px" />
+            </td>
+          </tr>
+        </table>
+    </div>
+    <p>This gives us four different parameters that we are able to change to create our desired hue shift. The first two parameters would be k_blue and k_yellow, which affects the strength of our overall temperature shift. The third parameter is the alpha value, which is the prominence of our object color. The last, beta, affects the strength of the luminance shift. 
+    </p>
+    <p>We initially had some issues with determining which coordinate system the vertex position and normal vectors were in when writing the vertex shader because three.js has poor documentation. To try and figure this out, we visualized the torus knot just shaded with the vertex normals as well as the cool and warm components individually. Through this, we were able to properly determine the correct position and normal vectors to pass into the shader program using what we learned from lecture and our prior experience of creating a diffuse shader in project 4.
+    </p>
+    <h3>Object Base Color</h3>
+    <p>We summed the result of the cool to warm shift and the specular highlight with the object base color to create the final color. The paper did not specify how the base color was incorporated.
+    </p>
+    <div align="middle">
+        <table style="width=100%">
+          
+          <tr>
+            <td>
+                <img src="images/f8.png" align="middle" width="800px" />
+            </td>
+          </tr>
+        </table>
+    </div>
+    <h3>Platform Struggles (three.js)</h3>
+    <p>We decided to implement our technical drawing shader as a custom shader in three.js. It already had the full rendering pipeline and simple 3D geometric models we could use that had built-in functionality for writing a custom shader.
+    </p>
+    <p>However, none of us had any experience with javascript or three.js, so most of the beginning challenge was trying to get the javascript and shader to compile. We went through several iterations; some of the first examples that we found of custom shaders in three.js stored the shaders in separate files but web browsers have updated since then to include the Same Origin Policy for security reasons. We experimented with setting up a local server for testing purposes as one of our team members had some experience with Rails, but we ultimately decided not to use this solution for our implementation. Instead, we found an example that showed a much simpler approach of embedding the shader source code as a separate html element within the same document, providing a pointer to the shader using document.getElementById, and parsing it as a string that three.js will then interpret as WebGL.
+    </p>
+    <h2 align="middle">Results</h2>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+    <script type="x-shader/x-vertex" id="techdrawVertex">
+        varying vec3 v_position;
+        varying vec3 v_normal;
+    
+        void main() {
+            //v_position = vec3(modelViewMatrix * vec4(position, 1.0));
+            v_position = position;
+            v_normal = normalize(normalMatrix* normal);
+            //v_normal = normal;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    </script>
+    <script type="x-shader/x-fragment" id="techdrawFragment">
+        //uniforms for phong shading coefficients
+        uniform vec3 colorA;
+        uniform float k_ambient;
+        uniform float k_diffuse;
+        uniform float k_specular;
+        uniform float p;
+
+        //uniforms for warm to cool
+        uniform float blue; //blue in [0, 1]
+        uniform float yellow; //yellow in [0, 1]
+        uniform float alpha;
+        uniform float beta;
+
+        //uniforms for camera and lights
+        uniform vec3 cameraPos;
+        uniform vec3 lightPos;
+        uniform vec3 lightIntensity;
+        uniform float lightIntensity_I;
+
+        //outputs from vertex shader
+        varying vec3 v_position;
+        varying vec3 v_normal;
+
+
+        vec3 rgb() {
+            vec3 n = normalize(v_normal);
+            vec3 l = normalize(vec3(lightPos) - v_position);
+            vec3 v = normalize(cameraPos - v_position);
+            vec3 h = (v + l) / length(v + l);
+            
+            float r = length(lightPos - v_position); //radius
+            vec3 illumination = lightIntensity / (r * r);
+
+
+            vec3 ambient = k_ambient * vec3(1., 1., 1.);
+            vec3 diffuse = k_diffuse * illumination * max(dot(n, l), 0.);
+            diffuse = k_diffuse * vec3(1., 1., 1.) * max(0., dot(l, n)); //from the paper
+            vec3 specular = k_specular * illumination * pow(max(dot(n, h), 0.), p);
+            vec3 blinn_phong = ambient + diffuse + specular;
+            
+            //blinn_phong = ambient;
+            //blinn_phong = diffuse;
+            //blinn_phong = specular;
+
+
+
+            //warm to cool
+            vec3 k_blue = vec3(0., 0., blue);
+            vec3 k_yellow = vec3(yellow, yellow, 0.);
+            vec3 k_cool = k_blue + alpha * vec3(1., 1., 1.); //kd = 1
+            vec3 k_warm = k_yellow + beta * vec3(1., 1., 1.); //kd = 1
+            //vec3 k_cool = vec3(0.,0.,0.);
+            //vec3 k_warm = vec3(1.,1.,1.);
+
+
+
+
+           // float diff = max(dot(n, l), 0.0);
+            //vec3 ref = diff*vec3(0.5, 0.5, 0.5);
+            //return ambient + diff;
+           // return specular + ((1. + dot(l, n)) / 2.) * k_cool;
+//           return (1. - ((1. + dot(l, n)) / 2.))*vec3(1.,1.,1.);
+
+           //return ((1. + dot(l, n)) / 2.)*vec3(1.,1.,1.);
+           return specular + ((1. + dot(l, n)) / 2.) * k_cool + (1. - ((1. + dot(l, n)) / 2.)) * k_warm;
+        }
+
+        void main() {
+            gl_FragColor = vec4(rgb(), 1.0);
+            gl_FragColor = gl_FragColor * vec4(colorA, 1.);
+
+        }
+    </script>
+	<body>
+        <div align="center">
+            <table style="width=100%">
+
+                <tr>
+
+                    <td align="left">
+                        <div class="slidecontainer">
+                            <p>Blue Value: <span id="BlueVal"></span></p>
+                            <input type="range" min="1" max="100" value="20" class="slider" id="BlueRange">
+                            
+                        </div>
+                    </td>
+             
+
+                    <td align="right">
+                        <div class="slidecontainer">
+                            <p>Yellow Value: <span id="YellowVal"></span></p>
+                            <input type="range" min="1" max="100" value="80" class="slider" id="YellowRange">
+                            
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+
+
+
+                    <td align="left">
+                        <div class="slidecontainer">
+                            <p>Alpha Value: <span id="AlphaVal"></span></p>
+                            <input type="range" min="1" max="100" value="20" class="slider" id="AlphaRange">
+                            
+                        </div>
+                    </td>
+                 
+                    <td align="right">
+                        <div class="slidecontainer">
+                            <p>Beta Value: <span id="BetaVal"></span></p>
+                            <input type="range" min="1" max="100" value="60" class="slider" id="BetaRange">
+                            
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+
+
+
+                    <td align="left">
+                        <div class="slidecontainer">
+                            <p>R Value: <span id="RVal"></span></p>
+                            <input type="range" min="0" max="255" value="237" class="slider" id="RRange">
+                            
+                        </div>
+                    </td>
+                 
+                    <td align="center">
+                        <div class="slidecontainer">
+                            <p>G Value: <span id="GVal"></span></p>
+                            <input type="range" min="0" max="255" value="100" class="slider" id="GRange">
+                            
+                        </div>
+                    </td>
+                    <td align="right">
+                        <div class="slidecontainer">
+                            <p>B Value: <span id="BVal"></span></p>
+                            <input type="range" min="0" max="255" value="180" class="slider" id="BRange">
+                            
+                        </div>
+                </tr>
+
+            </table>
+        </div>
+        
+        
+        
+        
+        
+        
+       
+		<script src="./js/three.js"></script>
+		<script>
+            var bslider = document.getElementById("BlueRange");
+            var boutput = document.getElementById("BlueVal");
+            boutput.innerHTML = bslider.value/100;
+            
+            var yslider = document.getElementById("YellowRange");
+            var youtput = document.getElementById("YellowVal");
+            youtput.innerHTML = yslider.value/100;
+            var aslider = document.getElementById("AlphaRange");
+            var aoutput = document.getElementById("AlphaVal");
+            aoutput.innerHTML = aslider.value/100;
+            var beslider = document.getElementById("BetaRange");
+            var beoutput = document.getElementById("BetaVal");
+            beoutput.innerHTML = beslider.value/100;
+            var slider1 = document.getElementById("RRange");
+            var output1 = document.getElementById("RVal");
+            output1.innerHTML = slider1.value
+            var slider2 = document.getElementById("GRange");
+            var output2 = document.getElementById("GVal");
+            output2.innerHTML = slider2.value
+            var slider3 = document.getElementById("BRange");
+            var output3 = document.getElementById("BVal");
+            output3.innerHTML = slider3.value
+            
+			const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+
+			const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+            camera.position.z = 5;
+
+			const renderer = new THREE.WebGLRenderer({antialias: true});
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			document.body.appendChild( renderer.domElement );
+
+
+            //lights
+            var pointLight = new THREE.PointLight(0xffffff, 7.0);
+            //pointLight.position.set(0.0, 2000.0, 0.0);
+            pointLight.position.set(1.5, 1.5, 1.5);
+            scene.add(pointLight);
+            pointLight.intensity = 0.5;
+
+
+			const geometry = new THREE.TorusKnotGeometry( );
+            function rgbToHex(r, g, b) {
+                return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+            }
+            const material = new THREE.ShaderMaterial({
+                uniforms: {
+                    //phong shading coeffs
+                    colorA: {type: 'vec4', value: new THREE.Color( 0xed64b4 )},
+                    k_ambient: {type: 'f', value: 0.4},
+                    k_diffuse: {type: 'f', value: 3.}, //watercolor uses 3.
+                    k_specular: {type: 'f', value: 30.}, //default for three js is 30
+                    p: {type: 'f', value: 50.},
+
+                    //warm to cool coeffs
+                    blue: {type: 'float', value: boutput.innerHTML}, //blue in [0, 1]
+                    yellow: {type: 'float', value: youtput.innerHTML}, //yellow in [0, 1]
+                    alpha: {type: 'float', value:aoutput.innerHTML},
+                    beta: {type: 'float', value: beoutput.innerHTML},
+
+                    //scene vars
+                    cameraPos: {type: 'vec3', value: camera.position},
+                    lightPos: {type: 'vec3', value: pointLight.position},
+                    lightIntensity: {type: 'vec3', value: new THREE.Vector3().addScalar(pointLight.intensity)},
+                    lightIntensity_I: {type: 'float', value: pointLight.intensity}
+                },
+                vertexShader: document.getElementById('techdrawVertex').textContent,
+                fragmentShader: document.getElementById('techdrawFragment').textContent
+            });
+            material.needsUpdate = true;
+
+            
+			const torusKnot = new THREE.Mesh( geometry, material );
+        
+            
+
+            bslider.oninput = function() {
+                boutput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.blue.value = boutput.innerHTML;
+            }
+            
+
+            yslider.oninput = function() {
+                youtput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.yellow.value = youtput.innerHTML; 
+            }
+
+            aslider.oninput = function() {
+                aoutput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.alpha.value = aoutput.innerHTML; 
+            }
+            beslider.oninput = function() {
+                beoutput.innerHTML = this.value/100;
+                torusKnot.material.uniforms.beta.value = beoutput.innerHTML; 
+            }
+            slider1.oninput = function() {
+                output1.innerHTML = this.value;
+                torusKnot.material.uniforms.colorA.value.setRGB(output1.innerHTML/255, output2.innerHTML/255, output3.innerHTML/255); 
+            }
+            slider2.oninput = function() {
+                output2.innerHTML = this.value;
+                torusKnot.material.uniforms.colorA.value.setRGB(output1.innerHTML/255, output2.innerHTML/255, output3.innerHTML/255); 
+            }
+            slider3.oninput = function() {
+                output3.innerHTML = this.value;
+                torusKnot.material.uniforms.colorA.value.setRGB(output1.innerHTML/255, output2.innerHTML/255, output3.innerHTML/255); 
+            }
+			scene.add( torusKnot );
+
+			var outline = new THREE.MeshBasicMaterial({color:0x000000, side:THREE.BackSide});
+            var outmesh = new THREE.Mesh(geometry, outline);
+            outmesh.position = torusKnot.position;
+            outmesh.scale.multiplyScalar(1.05);
+            scene.add(outmesh);
+            var inline = new THREE.MeshBasicMaterial({color:0x000000, side:THREE.BackSide});
+            var inmesh = new THREE.Mesh(geometry, inline);
+            inmesh.position = torusKnot.position;
+            inmesh.scale.multiplyScalar(0.93    );
+            scene.add(inmesh);
+
+
+			
+
+			function animate() {
+				requestAnimationFrame( animate );
+				renderer.render( scene, camera );
+                //torusKnot.material.blue.value = 0.5; // there is also setHSV and setRGB
+                //torusKnot.material.yellow.value = 0.5; 
+                //torusKnot.update();
+                
+				torusKnot.rotation.x += 0.01;
+				torusKnot.rotation.y += 0.01;
+
+				outmesh.rotation.x += 0.01;
+				outmesh.rotation.y += 0.01;
+                inmesh.rotation.x += 0.01;
+				inmesh.rotation.y += 0.01;
+
+			}
+			animate();
+
+        </script>
+        </tr>
+    </table>
+</div>
+
+    <h2 align="middle">Video</h2>
+    <div align="middle">
+        <table style="width=100%">
+          <tr>
+    <video width="640" height="480" controls>
+      <source src="images/zoom_1.mp4" type=video/mp4>
+    </video> </tr></table></div>
+
+    <h2 align="middle">Slides</h2>
+    <h3 align="middle">
+      <a href="https://docs.google.com/presentation/d/1HUAGA_KX4wR7uY2Z3rUwdV4go5eaUIfZtfszUs3bvt8/edit?usp=sharing
+      ">Google Slides link</a>
+    </h3>
+    <h2 align="middle">Resources</h2>
+    <h3>Papers</h3>
+    <p>We will be mostly following the paper by Gooch, Gooch, Shirley, and Cohen:
+        Gooch, A., Gooch, B., Shirley, P., & Cohen, E. (1998). A Non-Photorealistic Lighting Model For Automatic Technical Illustration. <br> Retrieved from https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.6762&rep=rep1&type=pdf
+    </p>
+    <p>
+        We tried to use this paper for edge detection:
+        Markosian, L., Kowalski, M., Trychin, S., Bourdev, L., Goldstein, D., Hughes, J. (1997). Real-Time Nonphotorealistic Rendering. <br> Retrieved from https://cs.brown.edu/people/jhughes/papers/Markosian-RNR-1997/paper.pdf
+        </p>
+    <h3>Hardware and Software Resources</h3>
+    <p>Project 4 code base (using pre-existing Phong shading implementation) https://cs184.eecs.berkeley.edu/sp21/docs/proj4
+    </p>
+    <h2 align="middle">Contributions</h2>
+    <h3>Skeets Suherman</h3>
+    <ul>
+        <li>Edge Outline</li>
+        <li>Three.js object, scene, lighting</li>
+      </ul>
+    <h3>Christine Lui</h3>
+    <ul>
+        <li>Compiling a custom shader in three.js</li>
+        <li>Cool to warm hue shift</li>
+        <li>Blinn-Phong highlights</li>
+        <li>Adding base color to the blue to yellow hue shift
+        </li>
+    </ul>
+    <!-- <h3>Jasper Hu</h3>
+    <ul>
+        <li>Edge Outline</li>
+        <li>Adding sliders to adjust values</li>
+        <li>Cool to warm debugging</li>
+    </ul>
+    <h3>Raisa Bunyamin</h3>
+    <ul>
+        <li>Website</li>
+        <li></li>
+      </ul> -->
+</body>
+
+</html>
