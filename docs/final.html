@@ -185,9 +185,6 @@
           </tr>
         </table>
     </div>
-    <div align="middle">
-        <table style="width=100%">
-          <tr>
     <script type="x-shader/x-vertex" id="techdrawVertex">
         varying vec3 v_position;
         varying vec3 v_normal;
@@ -348,6 +345,7 @@
         </div>
 		<script src="./js/three.js"></script>
 		<script>
+            
             var bslider = document.getElementById("BlueRange");
             var boutput = document.getElementById("BlueVal");
             boutput.innerHTML = bslider.value/100;
@@ -378,7 +376,7 @@
             camera.position.z = 5;
 
 			const renderer = new THREE.WebGLRenderer({antialias: true});
-			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.setSize( window.innerWidth * 0.8, window.innerHeight * 0.8);
 			document.body.appendChild( renderer.domElement );
 
 
@@ -473,7 +471,7 @@
 			
 
 			function animate() {
-				requestAnimationFrame( animate );
+                requestAnimationFrame( animate );
 				renderer.render( scene, camera );
                 //torusKnot.material.blue.value = 0.5; // there is also setHSV and setRGB
                 //torusKnot.material.yellow.value = 0.5; 
@@ -491,9 +489,7 @@
 			animate();
 
         </script>
-        </tr>
-    </table>
-</div>
+        
 
     <h2 align="middle">Video</h2>
     <div align="middle">
